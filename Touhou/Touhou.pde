@@ -14,8 +14,22 @@ void draw(){
   int x = mouseX;
   int y = mouseY;
   noCursor();
-  background(115);
+  background(255);
   image(me,x-15,y-15,30,40);
+  
+  bullets.add(new pBullet(x,y-15,15));
+  for (int i = 0 ; i < bullets.size() ; ){
+    bullet b = bullets.get(i);
+    if(b.getY() <= 0){
+      bullets.remove(i); 
+    }
+    else{
+      fill(190,41,91);
+      ellipse(b.getX(),b.getY(),10,10);
+      b.move();
+      i++;
+    }
+  }
 }
 
 abstract class bullet{
@@ -28,7 +42,7 @@ abstract class bullet{
   }
   
   void move(){
-    y += speed;
+    y -= speed;
   }
   
   float getY(){
