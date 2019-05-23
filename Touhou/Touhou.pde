@@ -2,13 +2,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 ArrayList<bullet> bullets;
+ArrayList<enemy> enemies;
 player p;
 
 //world size, playerbullets, player
 void setup(){
-  size(1200,1000);
+  size(600,1000);
   bullets =  new ArrayList<bullet>();
-  p = new player("sprite.png");
+  enemies = new ArrayList<enemy>();
+  p = new player();
 }
 
 void draw(){
@@ -31,6 +33,22 @@ void draw(){
       i++;
     }
   }
+  
+  //20% chance to spawn this one random enemy
+  if (Math.random() < 0.2){
+    enemies.add(new sevenUp(200,200*200,5,10));
+    enemies.add(new sevenUp(width-200,width-200*width-200,5,-10));
+  }
+  for (int i = 0 ;i < enemies.size() ;){
+    enemy e = enemies.get(i);
+    if(e.getX() <= 0 || e.getX() >= width){
+      enemies.remove(i);
+    }
+    else{
+      e.move();
+      i++;
+    }
+  }
 }
 
 abstract class thing{
@@ -40,17 +58,16 @@ abstract class thing{
 }
 
 class player extends thing{
-  PImage me;
+  PImage me = loadImage("sprite.png");
   
-  player(String image){
-    me = loadImage(image);
+  player(){
     x = mouseX;
     y = mouseY;
     noCursor();
   }
   
   void move(){
-    image(me,x-15,y-15,30,40);
+    image(me,x-20,y-20,40,50);
     x = mouseX;
     y = mouseY;
   }
@@ -78,5 +95,31 @@ class pBullet extends bullet{
     fill(190,41,91);
     ellipse(x,y,10,10);
     super.move();
+  }
+}
+
+abstract class enemy extends thing{
+  float health;
+  enemy(float x, float y, float health){
+    this.x = x;
+    this.y = y;
+    this.health = health;
+  }
+  abstract void move();
+}
+
+class sevenUp extends enemy{
+  PImage me = loadImage("sevenUp.png");
+  float velocity;
+  
+  sevenUp(float x, float y, float health, float velocity){
+    super(x,y,health);
+    this.velocity = velocity;
+  }  
+  
+  void move(){
+    y = x*x;
+    x -= velocity;
+    image(me,x-20,y-20,40,50);
   }
 }
