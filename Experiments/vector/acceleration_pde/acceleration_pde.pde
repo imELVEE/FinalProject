@@ -6,16 +6,23 @@ class acceleration {
   PVector point;
   PVector startingLocation;
   float topspeed;
+  int count;
   acceleration() {
     startingLocation = new PVector(width, height);
     location = new PVector(width/2,height/2);
     point = new PVector(width/2 - 100,height/2 + 100);
     velocity = new PVector(0,0);
     topspeed = 50;
+    count = 1;
   }
   
   void update() {
-    PVector acceleration = PVector.sub(point,location);
+    if (count == 1) {
+      PVector acceleration = PVector.sub(point,startingLocation);
+      count++;
+    }else {
+      PVector acceleration = PVector.sub(point,location);
+    }
     acceleration.setMag(0.2);
     velocity.add(acceleration);
     velocity.limit(topspeed);
