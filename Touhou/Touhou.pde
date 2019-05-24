@@ -34,10 +34,10 @@ void draw(){
     }
   }
   
-  //20% chance to spawn this one random enemy
-  if (Math.random() < 0.2){
-    enemies.add(new sevenUp(200,200*200,5,10));
-    enemies.add(new sevenUp(width-200,width-200*width-200,5,-10));
+  //1.2% chance to spawn this one random enemy
+  if (Math.random() < 0.012){
+    enemies.add(new sevenUp(200,0,5,1));
+    enemies.add(new sevenUp(width-200,0,5,-1));
   }
   for (int i = 0 ;i < enemies.size() ;){
     enemy e = enemies.get(i);
@@ -118,8 +118,8 @@ class sevenUp extends enemy{
   }  
   
   void move(){
-    y = x*x;
+    y += Math.abs(velocity);
     x -= velocity;
-    image(me,x-20,y-20,40,50);
+    image(me,x-20,y-20,20,40);
   }
 }
