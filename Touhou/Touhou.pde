@@ -36,8 +36,8 @@ void draw(){
   
   //1.2% chance to spawn this one random enemy
   if (Math.random() < 0.012){
-    enemies.add(new sevenUp(200,0,5,1));
-    enemies.add(new sevenUp(width-200,0,5,-1));
+    enemies.add(new sevenUp(200,0,5,1,200));
+    enemies.add(new sevenUp(width-200,0,5,-1,200));
   }
   for (int i = 0 ;i < enemies.size() ;){
     enemy e = enemies.get(i);
@@ -100,6 +100,8 @@ class pBullet extends bullet{
 
 abstract class enemy extends thing{
   float health;
+  float startingX;
+  float startingY;
   enemy(float x, float y, float health){
     this.x = x;
     this.y = y;
@@ -112,14 +114,19 @@ class sevenUp extends enemy{
   PImage me = loadImage("sevenUp.png");
   float velocity;
   
-  sevenUp(float x, float y, float health, float velocity){
+  sevenUp(float x, float y, float health, float velocity, float startX){
     super(x,y,health);
     this.velocity = velocity;
+    startingX = startX;
   }  
   
   void move(){
-    y += Math.abs(velocity);
+    String rad = ("" + (-(Math.min(x,width-x)*Math.min(x,width-x)) + 200*200));
+    double uRad = Double.parseDouble(rad);
+    double root = Math.sqrt(uRad);
+    y = (float)root;
     x -= velocity;
-    image(me,x-20,y-20,20,40);
+    //print("(",x,",",y,") ");
+    image(me,x-10,y-20,20,40);
   }
 }
