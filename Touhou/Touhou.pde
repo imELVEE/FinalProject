@@ -117,6 +117,8 @@ class sevenUp extends enemy{
     this.velocity = velocity;
   }  
   
+  
+  
   void move(){
     y += Math.abs(velocity);
     x -= velocity;
