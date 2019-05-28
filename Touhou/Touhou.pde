@@ -22,6 +22,7 @@ void draw(){
   float y = p.getY();
   
   //shoot a bullet every time bullet is called and remove it at edge of world
+  if (frameCount % 5 == 0) {
   bullets.add(new pBullet(x,y-30,15));
   for (int i = 0 ; i < bullets.size() ; ){
     boolean hit = false;
@@ -40,6 +41,7 @@ void draw(){
       b.move();
       i++;
     }
+  }
   }
   
   //1.2% chance to spawn this one random enemy
@@ -105,9 +107,10 @@ class pBullet extends bullet{
     super(ex,why,sped);
   }
   void move(){
-    fill(190,41,91);
-    ellipse(x,y,10,10);
-    super.move();
+      fill(190,41,91);
+      ellipse(x,y,10,10);
+      super.move();
+    
   }
 }
 
@@ -145,6 +148,8 @@ class sevenUp extends enemy{
     this.velocity = velocity;
   }  
   
+  void show(){image(me,x-10,y-20,20,40);}
+  
   
   
   void move(){
@@ -160,5 +165,4 @@ class sevenUp extends enemy{
 
 }
 
-  void show(){image(me,x-10,y-20,20,40);}
-}
+  
