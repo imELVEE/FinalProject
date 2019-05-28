@@ -4,6 +4,9 @@ import java.util.ArrayList;
 ArrayList<bullet> bullets;
 ArrayList<enemy> enemies;
 player p;
+//0 = start menu, 1 = basic game
+int mode;
+PImage starting;
 
 //world size, playerbullets, player
 void setup(){
@@ -11,9 +14,26 @@ void setup(){
   bullets =  new ArrayList<bullet>();
   enemies = new ArrayList<enemy>();
   p = new player();
+  mode = 0;
+  starting = loadImage("spriteThanos.png");
+}
+
+void mouseClicked(){
+    if (mode == 0){
+      mode = 1;
+    }
 }
 
 void draw(){
+  if (mode == 0){
+    image(starting,150,0,300,300);
+    textSize(30);
+    text("CLICK MOUSE TO START GAME",80,400);
+  }
+  
+  
+  
+  if (mode == 1){
   // x and y refer to player x and y
   background(255);
   //move player with mouse
@@ -43,7 +63,7 @@ void draw(){
   }
   
   //1.2% chance to spawn this one random enemy
-  if (Math.random() < 0.012){
+  if (Math.random() < 0.012 && enemies.size() < 11){
     float var = random(100);
     enemies.add(new sevenUp(200+var,0,5,1,200+var));
     enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
@@ -61,6 +81,7 @@ void draw(){
       e.show();
       i++;
     }
+  }
   }
 }
 
@@ -84,76 +105,4 @@ class player extends thing{
     x = mouseX;
     y = mouseY;
   }
-}
-
-abstract class bullet extends thing{
-  float velocity;
-  
-  bullet(float ex, float why, float speed){
-    x = ex;
-    y = why;
-    velocity = speed;
-  }
-  
-  void move(){
-    y -= velocity;
-  }
-}
-
-class pBullet extends bullet{
-  pBullet(float ex, float why, float sped){
-    super(ex,why,sped);
-  }
-  void move(){
-    fill(190,41,91);
-    ellipse(x,y,10,10);
-    super.move();
-  }
-}
-
-interface damageable{
-  void getHurt();
-  float getHealth();
-}
-
-abstract class enemy extends thing implements damageable{
-  PImage me;
-  float health;
-  float startX;
-  enemy(float x, float y, float health, float startX){
-    this.x = x;
-    this.y = y;
-    this.health = health;
-    this.startX = startX;
-  }
-  abstract void move();
-  
-  float getHealth(){return health;}
-  float getStartX(){return startX;}
-  abstract void show();
-  void getHurt(){
-    health -= 1;
-  }
-}
-
-class sevenUp extends enemy{
-  PImage me = loadImage("sevenUp.png");
-  float velocity;
-  
-  sevenUp(float x, float y, float health, float velocity, float startX){
-    super(x,y,health,startX);
-    this.velocity = velocity;
-  }  
-  
-  void move(){
-    //move in a circle
-    String rad = ("" + (-(Math.min(x,width-x)*Math.min(x,width-x)) + 200*200));
-    double uRad = Double.parseDouble(rad);
-    double root = Math.sqrt(uRad);
-    y = (float)root;
-    
-    x -= velocity;
-    //print("(",x,",",y,") ");
-  }
-  void show(){image(me,x-10,y-20,20,40);}
 }
