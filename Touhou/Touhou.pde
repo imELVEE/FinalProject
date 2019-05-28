@@ -110,9 +110,6 @@ class player extends thing{
     x = mouseX;
     y = mouseY;
   }
-<<<<<<< HEAD
-}
-=======
 }
 
 abstract class bullet extends thing{
@@ -194,4 +191,3 @@ class sevenUp extends enemy{
 }
 
   
->>>>>>> 05ea81d17c5acbf39fc63fbf0a8793458888cb12
