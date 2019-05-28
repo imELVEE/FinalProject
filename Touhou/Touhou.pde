@@ -69,6 +69,7 @@ void draw(){
 
 abstract class thing{
   float x,y;
+  float[] hitbox;
   float getX(){return x;}
   float getY(){return y;}
 }
@@ -79,6 +80,7 @@ class player extends thing{
   player(){
     x = mouseX;
     y = mouseY;
+    hitbox = new float[]{40, 50};
     noCursor();
   }
   
@@ -147,6 +149,7 @@ class sevenUp extends enemy{
   sevenUp(float x, float y, float health, float velocity, float startX){
     super(x,y,health,startX);
     this.velocity = velocity;
+    hitbox = new float[]{20,40};
   }  
   
   void show(){image(me,x-10,y-20,20,40);}
