@@ -24,11 +24,19 @@ void draw(){
   //shoot a bullet every time bullet is called and remove it at edge of world
   bullets.add(new pBullet(x,y-30,15));
   for (int i = 0 ; i < bullets.size() ; ){
+    boolean hit = false;
     bullet b = bullets.get(i);
-    if(b.getY() <= 0){
+    for (enemy m: enemies){
+      if (b.getX() + 5 <= m.getX()+10 && b.getX() - 5 >= m.getX() - 10 && b.getY() + 5 <= m.getY() + 20 && b.getY() - 5 >= m.getY() - 20){
+        bullets.remove(i);
+        m.getHurt();
+        hit = true;
+      }
+    }
+    if(!hit && b.getY() <= 0){
       bullets.remove(i); 
     }
-    else{
+    else if (!hit){
       b.move();
       i++;
     }
@@ -36,16 +44,21 @@ void draw(){
   
   //1.2% chance to spawn this one random enemy
   if (Math.random() < 0.012){
-    enemies.add(new sevenUp(200,0,5,1,200));
-    enemies.add(new sevenUp(width-200,0,5,-1,200));
+    float var = random(100);
+    enemies.add(new sevenUp(200+var,0,5,1,200+var));
+    enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
   }
   for (int i = 0 ;i < enemies.size() ;){
     enemy e = enemies.get(i);
-    if(e.getX() <= 0 || e.getX() >= width){
+    if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0){
       enemies.remove(i);
     }
     else{
-      e.move();
+      if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
+        //print("[" + Math.min(e.getX(),width-e.getX()) + ", " + Math.min(e.getX(),width-e.getX())/2 + "]");
+        e.move();
+      }
+      e.show();
       i++;
     }
   }
@@ -98,16 +111,29 @@ class pBullet extends bullet{
   }
 }
 
-abstract class enemy extends thing{
+interface damageable{
+  void getHurt();
+  float getHealth();
+}
+
+abstract class enemy extends thing implements damageable{
+  PImage me;
   float health;
-  float startingX;
-  float startingY;
-  enemy(float x, float y, float health){
+  float startX;
+  enemy(float x, float y, float health, float startX){
     this.x = x;
     this.y = y;
     this.health = health;
+    this.startX = startX;
   }
   abstract void move();
+  
+  float getHealth(){return health;}
+  float getStartX(){return startX;}
+  abstract void show();
+  void getHurt(){
+    health -= 1;
+  }
 }
 
 class sevenUp extends enemy{
@@ -115,18 +141,19 @@ class sevenUp extends enemy{
   float velocity;
   
   sevenUp(float x, float y, float health, float velocity, float startX){
-    super(x,y,health);
+    super(x,y,health,startX);
     this.velocity = velocity;
-    startingX = startX;
   }  
   
   void move(){
+    //move in a circle
     String rad = ("" + (-(Math.min(x,width-x)*Math.min(x,width-x)) + 200*200));
     double uRad = Double.parseDouble(rad);
     double root = Math.sqrt(uRad);
     y = (float)root;
+    
     x -= velocity;
     //print("(",x,",",y,") ");
-    image(me,x-10,y-20,20,40);
   }
+  void show(){image(me,x-10,y-20,20,40);}
 }
