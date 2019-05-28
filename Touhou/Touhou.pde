@@ -24,6 +24,7 @@ void draw(){
   //shoot a bullet every time bullet is called and remove it at edge of world
   if (frameCount % 5 == 0) {
   bullets.add(new pBullet(x,y-30,15));
+  }
   for (int i = 0 ; i < bullets.size() ; ){
     boolean hit = false;
     bullet b = bullets.get(i);
@@ -41,7 +42,7 @@ void draw(){
       b.move();
       i++;
     }
-  }
+  
   }
   
   //1.2% chance to spawn this one random enemy
