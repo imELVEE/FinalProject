@@ -4,9 +4,10 @@ import java.util.ArrayList;
 ArrayList<bullet> bullets;
 ArrayList<enemy> enemies;
 player p;
-//0 = start menu, 1 = basic game
+//-1 = paused, 0 = start menu, 1 = basic game
 int mode;
 PImage starting;
+PImage pause;
 
 //world size, playerbullets, player
 void setup(){
@@ -16,6 +17,7 @@ void setup(){
   p = new player();
   mode = 0;
   starting = loadImage("spriteThanos.png");
+  pause = loadImage("pause.png");
 }
 
 void mouseClicked(){
@@ -31,9 +33,12 @@ void draw(){
     text("CLICK MOUSE TO START GAME",80,400);
   }
   
-  
-  
   if (mode == 1){
+    mode1();
+  }
+}
+
+void mode1(){
   // x and y refer to player x and y
   background(255);
   //move player with mouse
@@ -85,7 +90,10 @@ void draw(){
       i++;
     }
   }
-  }
+}
+
+void pause(){
+  
 }
 
 abstract class thing{
@@ -112,6 +120,15 @@ class player extends thing{
   }
 }
 
+
+void keyPressed(){
+  if (key == 'p' || key == 'P'){
+    if (mode == 1)
+      mode = -1;
+    else
+      mode = 1;
+  }
+}
 
 
 interface damageable{
