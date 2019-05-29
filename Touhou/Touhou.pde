@@ -24,6 +24,25 @@ void mouseClicked(){
     }
 }
 
+boolean isTouching(float cx, float cy, float radius, float rx, float ry, float rw, float rh) {
+  float testX = cx;
+  float testY = cy;
+
+  if (cx < rx)         testX = rx;     
+  else if (cx > rx+rw) testX = rx+rw;   
+  if (cy < ry)         testY = ry;      
+  else if (cy > ry+rh) testY = ry+rh;   
+
+  float distX = cx-testX;
+  float distY = cy-testY;
+  float distance = sqrt( (distX*distX) + (distY*distY) );
+
+  if (distance <= radius) {
+    return true;
+  }
+  return false;
+}
+
 void draw(){
   if (mode == 0){
     image(starting,150,0,300,300);
@@ -49,7 +68,7 @@ void draw(){
     boolean hit = false;
     bullet b = bullets.get(i);
     for (enemy m: enemies){
-      if (b.getX() + 5 <= m.getX()+10 && b.getX() - 5 >= m.getX() - 10 && b.getY() + 5 <= m.getY() + 20 && b.getY() - 5 >= m.getY() - 20){
+      if (isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
         bullets.remove(i);
         m.getHurt();
         hit = true;
@@ -93,6 +112,7 @@ abstract class thing{
   float[] hitbox;
   float getX(){return x;}
   float getY(){return y;}
+  float[] getHitbox() {return hitbox;}
 }
 
 class player extends thing{
