@@ -51,7 +51,7 @@ void mode1(){
     boolean hit = false;
     bullet b = bullets.get(i);
     for (enemy m: enemies){
-      if (isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
+      if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
         bullets.remove(i);
         m.getHurt();
         hit = true;
@@ -96,9 +96,10 @@ void startMenu(){
 }
 
 void pause(){
-  image(pause,150,0,300,300);
+  background(255);
+  image(pause,150,0,275,300);
   textSize(15);
-  text("Press P to unpause the game.",100,400);
+  text("Press P to unpause the game.",175,400);
 }
 
 abstract class thing{
