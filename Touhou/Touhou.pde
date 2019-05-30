@@ -4,10 +4,12 @@ import java.util.ArrayList;
 ArrayList<bullet> bullets;
 ArrayList<enemy> enemies;
 player p;
-//-1 = paused, 0 = start menu, 1 = basic game
+//-1 = paused, 0 = start menu, 1 = basic game, 2 = level selection
 int mode;
 PImage starting;
 PImage pause;
+PImage cursor;
+PImage clicked;
 
 //world size, playerbullets, player
 void setup(){
@@ -18,6 +20,8 @@ void setup(){
   mode = 0;
   starting = loadImage("spriteThanos.png");
   pause = loadImage("pause.png");
+  cursor = loadImage("cursor.png");
+  clicked = loadImage("clicked.png");
 }
 
 void draw(){
@@ -32,6 +36,10 @@ void draw(){
   
   if (mode == -1){
     pause();
+  }
+  
+  if (mode == 2){
+    mode2();
   }
 }
 
@@ -90,9 +98,24 @@ void mode1(){
 }
 
 void startMenu(){
+  background(242,163,244);
   image(starting,150,0,300,300);
-  textSize(30);
-  text("CLICK MOUSE TO START GAME",80,400);
+  
+  //levels button: size (460.40)
+  fill(0);
+  stroke(255);
+  rect(70,370,460,40);
+  fill(255);
+  textSize(20);
+  text("Levels",270,400);
+  
+  
+  if (mousePressed){
+    image(clicked,mouseX-20,mouseY-10,40,40);
+  }
+  else{
+    image(cursor,mouseX-20,mouseY-10,40,40);
+  }
 }
 
 void pause(){
@@ -100,6 +123,26 @@ void pause(){
   image(pause,150,0,275,300);
   textSize(15);
   text("Press P to unpause the game.",175,400);
+}
+
+void mode2(){
+  background(242,163,244);
+  
+  //level 1 button: size(460,40)
+  fill(0);
+  stroke(255);
+  rect(70,100,460,40);
+  fill(255);
+  textSize(20);
+  text("1",290,130);
+  
+  
+  if (mousePressed){
+    image(clicked,mouseX-20,mouseY-10,40,40);
+  }
+  else{
+    image(cursor,mouseX-20,mouseY-10,40,40);
+  }
 }
 
 abstract class thing{
@@ -132,14 +175,23 @@ void keyPressed(){
   if (key == 'p' || key == 'P'){
     if (mode == 1)
       mode = -1;
-    else
+    else if (mode == -1)
       mode = 1;
   }
 }
 
 void mouseClicked(){
+    boolean buttonX = mouseX <= 70 + 460 && mouseX >= 70;
+  
     if (mode == 0){
-      mode = 1;
+     if (buttonX && mouseY <= 370+40 && mouseY >= 370){
+       mode = 2;
+     }
+    }
+    else if (mode == 2){
+      if (buttonX && mouseY <= 100+40 && mouseY >= 100){
+        mode = 1;
+      }
     }
 }
 
