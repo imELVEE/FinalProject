@@ -1,10 +1,15 @@
 abstract class bullet extends thing{
   float velocity;
+  float radius;
   
   bullet(float ex, float why, float speed){
     x = ex;
     y = why;
     velocity = speed;
+  }
+  
+  float getRad() {
+    return radius;
   }
   
   void move(){
@@ -15,6 +20,7 @@ abstract class bullet extends thing{
 class pBullet extends bullet{
   pBullet(float ex, float why, float sped){
     super(ex,why,sped);
+    radius = 10;
   }
   void move(){
       fill(190,41,91);
