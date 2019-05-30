@@ -21,9 +21,6 @@ void setup(){
 }
 
 void draw(){
-  if (frameCount % 10 == 0){
-    keyPressed();
-  }
   
   if (mode == 0){
     startMenu();
@@ -31,6 +28,10 @@ void draw(){
   
   if (mode == 1){
     mode1();
+  }
+  
+  if (mode == -1){
+    pause();
   }
 }
 
@@ -97,7 +98,7 @@ void startMenu(){
 void pause(){
   image(pause,150,0,300,300);
   textSize(15);
-  text("Press P to unpause the game.",80,400);
+  text("Press P to unpause the game.",100,400);
 }
 
 abstract class thing{
