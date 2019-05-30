@@ -20,36 +20,13 @@ void setup(){
   pause = loadImage("pause.png");
 }
 
-void mouseClicked(){
-    if (mode == 0){
-      mode = 1;
-    }
-}
-
-boolean isTouching(float cx, float cy, float radius, float rx, float ry, float rw, float rh) {
-  float testX = cx;
-  float testY = cy;
-
-  if (cx < rx)         testX = rx;     
-  else if (cx > rx+rw) testX = rx+rw;   
-  if (cy < ry)         testY = ry;      
-  else if (cy > ry+rh) testY = ry+rh;   
-
-  float distX = cx-testX;
-  float distY = cy-testY;
-  float distance = sqrt( (distX*distX) + (distY*distY) );
-
-  if (distance <= radius) {
-    return true;
-  }
-  return false;
-}
-
 void draw(){
+  if (frameCount % 10 == 0){
+    keyPressed();
+  }
+  
   if (mode == 0){
-    image(starting,150,0,300,300);
-    textSize(30);
-    text("CLICK MOUSE TO START GAME",80,400);
+    startMenu();
   }
   
   if (mode == 1){
@@ -67,7 +44,7 @@ void mode1(){
   
   //shoot a bullet every time bullet is called and remove it at edge of world
   if (frameCount % 5 == 0) {
-  bullets.add(new pBullet(x,y-30,15));
+    bullets.add(new pBullet(x,y-30,15));
   }
   for (int i = 0 ; i < bullets.size() ; ){
     boolean hit = false;
@@ -111,8 +88,16 @@ void mode1(){
   }
 }
 
+void startMenu(){
+  image(starting,150,0,300,300);
+  textSize(30);
+  text("CLICK MOUSE TO START GAME",80,400);
+}
+
 void pause(){
-  
+  image(pause,150,0,300,300);
+  textSize(15);
+  text("Press P to unpause the game.",80,400);
 }
 
 abstract class thing{
@@ -150,6 +135,30 @@ void keyPressed(){
   }
 }
 
+void mouseClicked(){
+    if (mode == 0){
+      mode = 1;
+    }
+}
+
+boolean isTouching(float cx, float cy, float radius, float rx, float ry, float rw, float rh) {
+  float testX = cx;
+  float testY = cy;
+
+  if (cx < rx)         testX = rx;     
+  else if (cx > rx+rw) testX = rx+rw;   
+  if (cy < ry)         testY = ry;      
+  else if (cy > ry+rh) testY = ry+rh;   
+
+  float distX = cx-testX;
+  float distY = cy-testY;
+  float distance = sqrt( (distX*distX) + (distY*distY) );
+
+  if (distance <= radius) {
+    return true;
+  }
+  return false;
+}
 
 interface damageable{
   void getHurt();
