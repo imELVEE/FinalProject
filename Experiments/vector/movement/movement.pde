@@ -2,8 +2,10 @@ float posX;
 float posY;
 
 void drive() { 
-  posX += random(-4, 4);
-  posY += random(-3, 3);
+  float tempX = random(-100,100) % 20;
+  float tempY = random(-100,100) %20;
+  posX += tempX;
+  posY += tempY;
 }
 
 void setup() {
@@ -11,6 +13,9 @@ void setup() {
 }
 
 void draw() {
-  drive();
-  ellipse(posX + 100, posY + 100, 20, 20);
+  if (frameCount % 10 == 0) {
+    clear();
+    drive();
+    ellipse(posX + 100, posY + 100, 20, 20);
+  }
 }
