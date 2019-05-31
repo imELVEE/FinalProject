@@ -3,9 +3,11 @@ import java.util.ArrayList;
 
 ArrayList<bullet> bullets;
 ArrayList<enemy> enemies;
+ArrayList<boss> bosses;
 player p;
 //-1 = paused, 0 = start menu, 1 = basic game, 2 = level selection
 int mode;
+int level;
 PImage starting;
 PImage pause;
 PImage cursor;
@@ -16,6 +18,7 @@ void setup(){
   size(600,1000);
   bullets =  new ArrayList<bullet>();
   enemies = new ArrayList<enemy>();
+  bosses = new ArrayList<boss>();
   p = new player();
   mode = 0;
   starting = loadImage("spriteThanos.png");
@@ -65,6 +68,13 @@ void mode1(){
         hit = true;
       }
     }
+    for (boss m: bosses){
+      if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
+        bullets.remove(i);
+        m.getHurt();
+        hit = true;
+      }
+    }
     if(!hit && b.getY() <= 0){
       bullets.remove(i); 
     }
@@ -75,12 +85,6 @@ void mode1(){
   
   }
   
-  //1.2% chance to spawn this one random enemy
-  if (Math.random() < 0.012 && enemies.size() < 11){
-    float var = random(100);
-    enemies.add(new sevenUp(200+var,0,5,1,200+var));
-    enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
-  }
   for (int i = 0 ;i < enemies.size() ;){
     enemy e = enemies.get(i);
     if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0){
@@ -94,6 +98,40 @@ void mode1(){
       e.show();
       i++;
     }
+  }
+  
+  for (int i = 0 ; i < bosses.size() ;){
+    boss b = bosses.get(i);
+    if(b.getX() <= 0 || b.getX() >= width || b.getHealth() <= 0){
+      bosses.remove(i);
+    }
+    else{
+      if (frameCount % 60 == 0){
+        b.move();
+      }
+      b.show();
+      i++;
+    }
+  }
+  
+  if (level == 1){level1();}
+}
+
+void level1(){
+  //print(" " + enemies.size());
+  print(" " + bosses.size());
+  if (frameCount % 260 == 0 && frameCount > 0 && bosses.size() == 0){
+    float var = random(100);
+    enemies.add(new sevenUp(200+var,0,5,1,200+var));
+    enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
+  }
+  if (frameCount % 360 == 0 && frameCount > 0 && bosses.size() == 0){
+    float var = random(150);
+    enemies.add(new sevenUp(300+var,0,5,1,300+var));;;
+    enemies.add(new sevenUp(width-300-var,0,5,-1,width-300-var));
+  }
+  if (enemies.size() == 0 && frameCount > 360){
+    bosses.add(new cola(width/2,100,30,width/2,1,width/2 - 100, width/2 + 100));
   }
 }
 
@@ -186,6 +224,7 @@ void mouseClicked(){
     if (mode == 0){
      if (buttonX && mouseY <= 370+40 && mouseY >= 370){
        mode = 2;
+       level = 1;
      }
     }
     else if (mode == 2){
