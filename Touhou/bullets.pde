@@ -52,6 +52,8 @@ class eBullet extends bullet {
   }
   
   void moveD() {
-    ellipse(x + velocity * cos(radius), y + velocity * sin(radius), 10,10);
+    ellipse(x + velocity * cos(degree), y + velocity * sin(degree), 10,10);
+    x += velocity * cos(degree);
+    y += velocity * sin(degree);
   }
 }

@@ -126,18 +126,15 @@ void mode1(){
           }else {
             pattern1(e.getX(), e.getY(), 2);
           }
-          counter++;
-          for (int z = 0; z < eBullets.size(); z++) {
-            eBullets.get(z).moveD();
-          }
-          
+          counter++;  
         }
         for (int z = 0; z < eBullets.size();) {
           boolean hit = false;
           eBullet b = eBullets.get(z);
+          b.moveD();
           if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
           }
-          if(!hit && b.getY() <= 0){
+          if(!hit &&  (b.getY() <= 0 || b.getX() <= 0 || b.getY() >= height || b.getX() >= width)){
             eBullets.remove(z); 
            }else if (!hit){
              z++;
@@ -346,18 +343,18 @@ void pattern1(float x, float  y, int mode){
   //x and y are enemy coordinates
      if (mode == 1) {
         
-        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 5, 0));
-        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 5, 72));
-        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 5, 144));
-        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 5, 216));
-        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 5, 288));
+        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 10, 0));
+        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 10, 72));
+        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 10, 144));
+        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 10, 216));
+        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 10, 288));
         
      } else if (mode == 2) {
-       eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 5, 36));
-        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 5, 108));
-        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 5, 180));
-        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 5, 252));
-        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 5, 324));
+       eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 10, 36));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 10, 108));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 10, 180));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 10, 252));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 10, 324));
      }
   }
 
