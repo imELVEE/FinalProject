@@ -171,17 +171,20 @@ void level1(){
   //print(" " + bosses.size());
   if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2){
     float var = random(100);
-    enemies.add(new sevenUp(200+var,1,5,1,200+var));
-    enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
-    //enemies.add(new sevenUp(width/2+var,1,5,1,width/2+var));
+    int vel;
+    if (random(1) > 0.5){vel = 1;}
+    else{vel = -1;}
+    //enemies.add(new sevenUp(200+var,1,5,1,200+var));
+    //enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
+    enemies.add(new sevenUp(width/2+var,1,5,vel,width/2+var));
   }
-  
+  /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
     float var = random(150);
     enemies.add(new sevenUp(100+var,1,5,-1,100+var));
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
-  
+  */
   if (enemies.size() == 0 && frameCount > 300){
     bosses.add(new cola(width/2,100,50,width/2,20,width/2 - 100, width/2 + 100));
     level = 2;
