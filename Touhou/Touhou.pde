@@ -18,6 +18,7 @@ int counter;
 boolean moving;
 coords moveC;
 boolean dead;
+int count;
 
 //world size, playerbullets, player
 void setup(){
@@ -36,6 +37,7 @@ void setup(){
   clicked = loadImage("clicked.png");
   gover = loadImage("gameover.png");
   dead = false;
+  count = 0;
 }
 
 void draw(){
@@ -121,6 +123,7 @@ void mode1(){
       if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0 || e.getY() <= 0){
         dead = true;
         enemies.remove(i);
+        frameCount = 0;
       }
       else{
         //if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
@@ -188,18 +191,26 @@ void mode1(){
   } else {
     if (eBullets.size() ==0 ) {
       dead = false;
+      count = 0;
+    }
+    if (frameCount % 5 == 0) {
+      count++;
     }
     for (int j = 0; j < eBullets.size();) {
       eBullet temp = eBullets.get(j);
       fill(153);
       temp.show();
       temp.setVelo(10);
-      if (frameCount % 5 == 0) {
-        temp.follow();
+      if (frameCount > 60) {
+        if (frameCount % 5 == 0) {
+          temp.follow();
+          
+        }
       }
-      if (isTouching(temp.getX(), temp.getY(), temp.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1]) || (temp.getY() <= 0 || temp.getX() <= 0 || temp.getY() >= height || temp.getX() >= width)){
-        eBullets.remove(j);
-      } else { j++;}
+        if (isTouching(temp.getX(), temp.getY(), temp.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1]) || (temp.getY() <= 0 || temp.getX() <= 0 || temp.getY() >= height || temp.getX() >= width) || count > 16){
+          eBullets.remove(j);
+        } else { j++;}
+     
       
     }
   }
