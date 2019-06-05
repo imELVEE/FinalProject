@@ -46,6 +46,7 @@ class sevenUp extends enemy{
   PImage me = loadImage("sevenUp.png");
   float velocity;
   
+  
   sevenUp(float x, float y, float health, float velocity, float startX){
     super(x,y,health,startX);
     this.velocity = velocity;

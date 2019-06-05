@@ -37,10 +37,31 @@ class pBullet extends bullet{
 
 class eBullet extends bullet {
   int degree;
+  float velox;
+  float veloy;
+  PVector mouse;
+  PVector location;
+  PVector ve;
+  eBullet(float ex, float why, float vx, float vy){
+    super(ex,why,sqrt(pow(vx,2) + pow(vy,2)));
+    radius= 10;
+    velox = vx;
+    veloy = vy;
+    mouse = new PVector(mouseX, mouseY);
+    location = new PVector(ex,why);
+    ve = new PVector(0,0);
+  }
   eBullet(float ex, float why, float speed, int deg){
     super(ex,why,speed);
     radius= 10;
     degree = deg;
+    mouse = new PVector(mouseX, mouseY);
+    location = new PVector(ex,why);
+    ve = new PVector(0,0);
+  }
+  
+  void setVelo(int v) {
+    velocity = v;
   }
   
   String toString() {
@@ -51,9 +72,20 @@ class eBullet extends bullet {
     ellipse(x + velocity * cos(r), y + velocity * sin(r), 10,10);
   }
   
+  void follow() {
+    location = new PVector(x,y);
+    mouse = new PVector(mouseX, mouseY);
+    PVector acceleration = PVector.sub(mouse,location);
+    acceleration.setMag(50);
+    ve.add(acceleration);
+    location.add(ve);
+    x= location.x;
+    y= location.y;
+  }
   void moveD() {
     ellipse(x + velocity * cos(degree), y + velocity * sin(degree), 10,10);
     x += velocity * cos(degree);
     y += velocity * sin(degree);
   }
+  void show() {ellipse(x,y,10,10);}
 }
