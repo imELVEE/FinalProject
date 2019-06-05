@@ -4,6 +4,7 @@ import java.util.ArrayList;
 ArrayList<bullet> bullets;
 ArrayList<enemy> enemies;
 ArrayList<boss> bosses;
+ArrayList<eBullet> eBullets;
 player p;
 //-1 = paused, 0 = start menu, 1 = basic game, 2 = level selection
 int mode;
@@ -12,6 +13,8 @@ PImage starting;
 PImage pause;
 PImage cursor;
 PImage clicked;
+boolean first = true;
+boolean second = false;
 
 //world size, playerbullets, player
 void setup(){
@@ -58,6 +61,7 @@ void draw(){
 
 
 void mode1(){
+  int counter = 0;
   // x and y refer to player x and y
   background(255);
   //move player with mouse
@@ -105,7 +109,18 @@ void mode1(){
       if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
         //print("[" + Math.min(e.getX(),width-e.getX()) + ", " + Math.min(e.getX(),width-e.getX())/2 + "]");
         e.move();
-      }
+      } else {
+        if (counter % 2 ==0) {
+          pattern1(e.getX(), e.getY(), 1);
+        }else {
+          pattern1(e.getX(), e.getY(), 2);
+        }
+        counter++;
+        for (int y = 0; y < eBullets.size; y++) {
+          eBullets.get(y).moveD()
+        }
+          
+        
       e.show();
       i++;
     }
@@ -274,6 +289,24 @@ interface damageable{
   void getHurt();
   float getHealth();
 }
+
+void pattern1(int x, int y, int mode){
+  //x and y are enemy coordinates
+     if (mode == 1) {
+        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 5));
+        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 5));
+        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 5));
+        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 5));
+        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 5));
+        
+     } else if (mode == 2) {
+       eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 5));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 5));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 5));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 5));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 5));
+     }
+  }
 
 
 
