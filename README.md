@@ -1,5 +1,7 @@
 # FinalProject
 
+A bullet hell game, shoot enemies while avoiding an oncoming onslaught of bullets. Bullets are shot automatically, you just have to move. Use your mouse to navigate throught the menus. To start, open Touhou.pde in processing and the press the play button at the top left. Good Luck!
+
 Day1:
   Alvi:
     A barebones sprite that shoots bullets
