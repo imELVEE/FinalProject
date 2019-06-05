@@ -53,7 +53,7 @@ class sevenUp extends enemy{
   void show(){image(me,x-10,y-20,20,40);}
   
   
-  
+  /*
   void move(){
     //move in a circle
     String rad = ("" + (-(Math.min(x,width-x)*Math.min(x,width-x)) + 200*200));
@@ -63,6 +63,11 @@ class sevenUp extends enemy{
     
     x -= velocity;
     //print("(",x,",",y,") ");
+  }
+  */
+  
+  void move(){
+    y -= velocity;
   }
 }
 

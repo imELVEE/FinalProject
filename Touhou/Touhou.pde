@@ -117,7 +117,8 @@ void mode1(){
       enemies.remove(i);
     }
     else{
-      if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
+      //if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
+      if (e.getY() < e.getStartX()){ //getStartX is just a limiter for now, too lazy to make a new variable
         //print("[" + Math.min(e.getX(),width-e.getX()) + ", " + Math.min(e.getX(),width-e.getX())/2 + "]");
         e.move();
       } else {
@@ -172,13 +173,15 @@ void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
   if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2){
-    float var = random(100);
-    int vel;
+    float var = random(100,200);
+    int vel = -1;
+    /*
     if (random(1) > 0.5){vel = 1;}
     else{vel = -1;}
+    */
     //enemies.add(new sevenUp(200+var,1,5,1,200+var));
     //enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
-    enemies.add(new sevenUp(width/2+var,1,5,vel,width/2+var));
+    enemies.add(new sevenUp(width/2-150+var,1,5,vel,Math.abs(var)));
   }
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
