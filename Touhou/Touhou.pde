@@ -124,6 +124,17 @@ void mode1(){
           }
           
         }
+        for (int z = 0; z < eBullets.size();) {
+          boolean hit = false;
+          eBullet b = eBullets.get(z);
+          if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+          }
+          if(!hit && b.getY() <= 0){
+            eBullets.remove(z); 
+           }else if (!hit){
+             z++;
+           }
+        }
       }
           
         
@@ -243,6 +254,7 @@ class player extends thing{
     x = mouseX;
     y = mouseY;
   }
+  
 }
 
 
