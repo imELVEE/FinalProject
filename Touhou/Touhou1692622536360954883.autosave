@@ -6,14 +6,13 @@ ArrayList<enemy> enemies;
 ArrayList<boss> bosses;
 ArrayList<eBullet> eBullets;
 player p;
-//02 = game over, -1 = paused, 0 = start menu, 1 = basic game, 2 = level selection
+//-2 = game over, -1 = paused, 0 = start menu, 1 = basic game, 2 = level selection
 int mode;
 int level;
 PImage starting;
 PImage pause;
 PImage cursor;
 PImage clicked;
-PImage gover;
 boolean first = true;
 boolean second = false;
 
@@ -30,14 +29,13 @@ void setup(){
   pause = loadImage("pause.png");
   cursor = loadImage("cursor.png");
   clicked = loadImage("clicked.png");
-  gover = loadImage("gameover.png");
 }
 
 void draw(){
+  
+  
   //print(frameCount+ " ");
   //print(bullets.size() + " ");
-  
-  if (p.getHealth() <= 0){mode = -2;}
   
   if (mode == 0){
     startMenu();
@@ -53,10 +51,6 @@ void draw(){
   
   if (mode == 2){
     mode2();
-  }
-  
-  if (mode == -2){
-    gameOver();
   }
 }
 
@@ -131,17 +125,6 @@ void mode1(){
             eBullets.get(z).moveD();
           }
           
-        }
-        for (int z = 0; z < eBullets.size();) {
-          boolean hit = false;
-          eBullet b = eBullets.get(z);
-          if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
-          }
-          if(!hit && b.getY() <= 0){
-            eBullets.remove(z); 
-           }else if (!hit){
-             z++;
-           }
         }
       }
           
@@ -239,20 +222,6 @@ void mode2(){
   }
 }
 
-void gameOver(){
-  background(183,33,33);
-  image(gover,150,0,275,300);
-  textSize(15);
-  text("You died. How sad. Click to restart.",175,400);
-}
-
-
-
-
-
-
-
-
 abstract class thing{
   float x,y;
   float[] hitbox;
@@ -263,28 +232,19 @@ abstract class thing{
 
 class player extends thing{
   PImage me = loadImage("sprite.png");
-  int health;
   
   player(){
-    health = 1;
     x = mouseX;
     y = mouseY;
     hitbox = new float[]{40, 50};
     noCursor();
   }
   
-  void getHurt(){
-    health--;
-  }
-  
-  int getHealth(){return health;}
-  
   void move(){
     image(me,x-20,y-20,40,50);
     x = mouseX;
     y = mouseY;
   }
-  
 }
 
 
@@ -312,9 +272,6 @@ void mouseClicked(){
         mode = 1;
         frameCount = 0;
       }
-    }
-    else if (mode == -2){
-      setup();
     }
 }
 
