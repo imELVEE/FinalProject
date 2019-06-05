@@ -11,6 +11,8 @@ abstract class enemy extends thing implements damageable{
     this.startX = startX;
   }
   abstract void move();
+  abstract void moveD(float velox, float veloy);
+  
   
   float getHealth(){return health;}
   float getStartX(){return startX;}
@@ -49,6 +51,11 @@ class sevenUp extends enemy{
     this.velocity = velocity;
     hitbox = new float[]{20,40};
   }  
+  
+  void moveD(float velox, float veloy) {
+    x += velox;
+    y += veloy;
+  }
   
   void show(){image(me,x-10,y-20,20,40);}
   

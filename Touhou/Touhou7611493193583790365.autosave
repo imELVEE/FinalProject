@@ -14,9 +14,9 @@ PImage pause;
 PImage cursor;
 PImage clicked;
 PImage gover;
+boolean first = true;
+boolean second = false;
 int counter;
-boolean moving;
-coords moveC;
 
 //world size, playerbullets, player
 void setup(){
@@ -26,7 +26,6 @@ void setup(){
   bosses = new ArrayList<boss>();
   eBullets = new ArrayList<eBullet>();
   counter = 0;
-  moving = false;
   p = new player();
   mode = 0;
   starting = loadImage("spriteThanos.png");
@@ -89,28 +88,26 @@ void mode1(){
     boolean hit = false;
     bullet b = bullets.get(i);
     b.move();
-      for (enemy m: enemies){
-        if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
-          bullets.remove(i);
-          m.getHurt();
-          hit = true;
-        }
+    for (enemy m: enemies){
+      if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
+        bullets.remove(i);
+        m.getHurt();
+        hit = true;
       }
-      for (boss m: bosses){
-        if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
-          bullets.remove(i);
-          m.getHurt();
-          hit = true;
-        }
+    }
+    for (boss m: bosses){
+      if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
+        bullets.remove(i);
+        m.getHurt();
+        hit = true;
       }
-    
+    }
     if(!hit && b.getY() <= 0){
       bullets.remove(i); 
     }
     else if (!hit){
       i++;
     }
- 
   
   }
   
@@ -120,8 +117,7 @@ void mode1(){
       enemies.remove(i);
     }
     else{
-      //if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
-      if (e.getY() < e.getStartX()){ //getStartX is just a limiter for now, too lazy to make a new variable
+      if (Math.min(e.getX(),width-e.getX()) > Math.min(e.getStartX(),width-e.getStartX())/2){
         //print("[" + Math.min(e.getX(),width-e.getX()) + ", " + Math.min(e.getX(),width-e.getX())/2 + "]");
         e.move();
       } else {
@@ -148,20 +144,7 @@ void mode1(){
         }
       }
           
-      if (frameCount % 200 == 0 && !moving) {
-        moving = true;
-        moveC = new coords(e.getX(), e.getY());
-      }
-      if (moving) {
-        if (frameCount % 3 == 0) {
-          e.moveD(moveC.getVelox(), moveC.getVeloy());
-          moveC.halveY();
-          moveC.halveX();
-          if (moveC.getVeloy() <= 0.5 && moveC.getVelox() <= 0.5) {
-            moving = false;
-          }
-        }
-      }
+        
       e.show();
       i++;
     }
@@ -188,16 +171,14 @@ void mode1(){
 void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
-  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1){
-    float var = random(100,200);
-    int vel = -1;
-    /*
+  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2){
+    float var = random(100);
+    int vel;
     if (random(1) > 0.5){vel = 1;}
     else{vel = -1;}
-    */
     //enemies.add(new sevenUp(200+var,1,5,1,200+var));
     //enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
-    enemies.add(new sevenUp(width/2-150+var,1,5,vel,Math.abs(var)));
+    enemies.add(new sevenUp(width/2+var,1,5,vel,width/2+var));
   }
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
@@ -363,59 +344,32 @@ interface damageable{
   float getHealth();
 }
 
-class coords {
-  float x;
-  float y;
-  float veloy;
-  float velox;
-  coords(float ex, float why) {
-    x = random(200, width - 200);
-    y = random(200, height - 200);
-    if (x - ex >= 0) {
-      velox = random(5, 10);
-    } else { velox = random(-10, -5);}
-    if (y - why >= 0) {
-      veloy = random(7,14);
-    }else {veloy = random(-14, -7);}
-    
-    
-  }
-  
-  float getX() {return x;}
-  float getY() {return y;}
-  float getVeloy() {return veloy;}
-  float getVelox() {return velox;}
-  void halveY() {veloy *= 0.95;}
-  void halveX() {velox *= 0.95;}
-}
-
-
 void pattern1(float x, float  y, int mode){
   //x and y are enemy coordinates
      if (mode == 1) {
         
-        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 5, 0));
-        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 5, 72));
-        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 5, 144));
-        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 5, 216));
-        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 5, 288));
-        eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 5, 36));
-        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 5, 108));
-        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 5, 180));
-        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 5, 252));
-        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 5, 324));
+        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 3, 0));
+        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 3, 72));
+        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 3, 144));
+        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 3, 216));
+        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 3, 288));
+        eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 3, 36));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 3, 108));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 3, 180));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 3, 252));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 3, 324));
         
      } else if (mode == 2) {
-       eBullets.add(new eBullet(x + 5 * cos(0 + 18), y + 5 * sin(0 + 18), 5, 18));
-        eBullets.add(new eBullet(x + 5 * cos(72 + 18), y + 5 * sin(72 + 18), 5, 90));
-        eBullets.add(new eBullet(x + 5 * cos(144 + 18), y + 5 * sin(144 + 18), 5, 162));
-        eBullets.add(new eBullet(x + 5 * cos(216 + 18), y + 5 * sin(216 + 18), 5, 234));
-        eBullets.add(new eBullet(x + 5 * cos(288 + 18), y + 5 * sin(288 + 18), 5, 306));
-       eBullets.add(new eBullet(x + 5 * cos(0 + 36 + 18), y + 5 * sin(0 + 36 + 18), 5, 54));
-        eBullets.add(new eBullet(x + 5 * cos(72 + 36 + 18), y + 5 * sin(72 + 36 + 18), 5, 126));
-        eBullets.add(new eBullet(x + 5 * cos(144 + 36 + 18), y + 5 * sin(144 + 36 + 18), 5, 198));
-        eBullets.add(new eBullet(x + 5 * cos(216 + 36 + 18), y + 5 * sin(216 + 36 + 18), 5, 270));
-        eBullets.add(new eBullet(x + 5 * cos(288 + 36 + 18), y + 5 * sin(288 + 36 + 18), 5, 342));
+       eBullets.add(new eBullet(x + 5 * cos(0 + 18), y + 5 * sin(0 + 18), 8, 18));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 18), y + 5 * sin(72 + 18), 8, 90));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 18), y + 5 * sin(144 + 18), 8, 162));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 18), y + 5 * sin(216 + 18), 8, 234));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 18), y + 5 * sin(288 + 18), 8, 306));
+       eBullets.add(new eBullet(x + 5 * cos(0 + 36 + 18), y + 5 * sin(0 + 36 + 18), 8, 54));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36 + 18), y + 5 * sin(72 + 36 + 18), 8, 126));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36 + 18), y + 5 * sin(144 + 36 + 18), 8, 198));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36 + 18), y + 5 * sin(216 + 36 + 18), 8, 270));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36 + 18), y + 5 * sin(288 + 36 + 18), 8, 342));
      }
   }
 
