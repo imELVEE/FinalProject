@@ -22,6 +22,9 @@ boolean dead;
 int count;
 int count2;
 int eCount;
+int vd;
+boolean moved;
+int degreeC;
 
 //world size, playerbullets, player
 void setup(){
@@ -44,6 +47,9 @@ void setup(){
   count = 0;
   count2 = 0;
   eCount = 0;
+  vd = 5;
+  moved = false;
+  degreeC = 0;
 }
 
 void draw(){
@@ -90,7 +96,9 @@ void mode1(){
   p.move();
   float x = p.getX();
   float y = p.getY();
-  
+  if (p.getHealth() == 0) {
+    gameOver();
+  }
   //shoot a bullet every time bullet is called and remove it at edge of world
   if (frameCount % 5 == 0) {
     bullets.add(new pBullet(x,y-30,15));
@@ -152,7 +160,7 @@ void mode1(){
               }
               counter++;  
             }
-            if (frameCount % 25 == 0) {
+            /*if (frameCount % 25 == 0) {
               count2 = 0;
             }
             if (count2 < 3) {
@@ -160,7 +168,7 @@ void mode1(){
                 pattern2(e.getX(), e.getY());
                 count2++;
               }
-            }
+            }*/
             
             
             for (int z = 0; z < eBullets.size();) {
@@ -168,6 +176,7 @@ void mode1(){
               eBullet b = eBullets.get(z);
               b.moveD();
               if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+                p.getHurt();
               }
               if(!hit &&  (b.getY() <= 0 || b.getX() <= 0 || b.getY() >= height || b.getX() >= width)){
                 eBullets.remove(z); 
@@ -185,6 +194,7 @@ void mode1(){
               
               b.slowDown();
               if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+                p.getHurt();
               }
               if(!hit &&  (b.getY() <= 0 || b.getX() <= 0 || b.getY() >= height || b.getX() >= width) || b.lifespan > 150){
                 eBullets.remove(z); 
@@ -236,11 +246,127 @@ void mode1(){
       boss b = bosses.get(i);
       if(b.getX() <= 0 || b.getX() >= width || b.getHealth() <= 0){
         bosses.remove(i);
+        dead = true;
       }
       else{
-        if (frameCount % 60 == 0){
-          b.move();
+        if (b.getHealth() > 20) {
+          if (frameCount % 160 == 0 && !moving) {
+            vd = 5;
+            moving = true;
+          }
+          if (frameCount % 2 == 0 && !moving){
+            b.move();
+          }
+          if (moving) {
+            if (! (b.getY() >= height) && ! moved) { 
+              b.moveDown(vd);
+              vd *= 1.25;
+              if (frameCount % 3 == 0) {
+                pattern4(b.getX(), b.getY());
+                
+              }
+            } else {
+              moved = true;
+              vd=-10;
+              b.moveDown(vd);
+              if (b.getY() <= 120) {
+                moving = false;
+                moved = false;
+                frameCount = 0;
+              }
+            }
+          }
+        
+          for (int z = 0; z < eBullets.size();) {
+             boolean hit = false;
+              eBullet h = eBullets.get(z);   
+              h.slowDown();
+              if (!hit && isTouching(h.getX(), h.getY(), h.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+                p.getHurt();
+              }
+              if(!hit &&  (h.getY() <= 0 || h.getX() <= 0 || h.getY() >= height || h.getX() >= width) || h.lifespan == 100){
+                eBullets.remove(z); 
+              }else if (!hit){
+                z++;
+              }
+            }
+        } else if (b.getHealth() > 10 && b.getHealth() <= 20) {
+          
+          if (frameCount % 5 == 0) {
+            pattern5(b.getX(), b.getY(), degreeC);
+            degreeC+=1;
+          }
+            for (int z = 0; z < eBullets.size();) {
+              boolean hit = false;
+              eBullet q = eBullets.get(z);
+              q.moveD();
+              if (!hit && isTouching(q.getX(), q.getY(), q.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+                p.getHurt();
+              }
+              if(!hit &&  (q.getY() <= 0 || q.getX() <= 0 || q.getY() >= height || q.getX() >= width)){
+                eBullets.remove(z); 
+               }else if (!hit){
+                 z++;
+               }
+            }
+          if (frameCount % 100 == 0 && !moving) {
+            moving = true;
+            moveC = new coords(b.getX(), b.getY());
+          }
+          if (moving) {
+            if (frameCount % 3 == 0) {
+              b.moveD(moveC.getVelox(), moveC.getVeloy());
+              moveC.halveY();
+              moveC.halveX();
+              if (moveC.getVeloy() <= 0.5 && moveC.getVelox() <= 0.5) {
+                moving = false;
+              }
+            }
+          }
+        } else {
+          if (frameCount % 5 == 0) {
+            pattern5(b.getX(), b.getY(), degreeC);
+            degreeC+=2;
+          }
+          if (frameCount % 10 == 0) {
+              if (counter % 2 ==0) {
+                pattern1(b.getX(), b.getY(), 1);
+                
+              }else {
+                pattern1(b.getX(), b.getY(), 2);
+              }
+              counter++;  
+            }
+            for (int z = 0; z < eBullets.size();) {
+              boolean hit = false;
+              eBullet q = eBullets.get(z);
+              q.moveD();
+              if (!hit && isTouching(q.getX(), q.getY(), q.getRad(), p.getX(), p.getY(), p.getHitbox()[0], p.getHitbox()[1])){
+                p.getHurt();
+              }
+              if(!hit &&  (q.getY() <= 0 || q.getX() <= 0 || q.getY() >= height || q.getX() >= width)){
+                eBullets.remove(z); 
+               }else if (!hit){
+                 z++;
+               }
+            }
+          if (!moving) {
+            moving = true;
+            moveC = new coords(b.getX(), b.getY());
+          } else {
+            if (b.getX() > width - b.getHitbox()[0] || b.getX() < b.getHitbox()[0]) {
+              moveC.setVelox(moveC.getVelox() * -1);
+            }
+            if (b.getY() > height - b.getHitbox()[1] || b.getY() < b.getHitbox()[1]) {
+              moveC.setVeloy(moveC.getVeloy() * -1);
+            }
+            b.moveD(moveC.getVelox(), moveC.getVeloy());
+          }
         }
+        
+          
+        
+        
         b.show();
         i++;
       }
@@ -279,6 +405,7 @@ void mode1(){
 void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
+  
   if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1){
     float var = random(100,200);
     int vel = -1;
@@ -286,10 +413,7 @@ void level1(){
       
       
       moving2 = true;
-      /*
-      if (random(1) > 0.5){vel = 1;}
-      else{vel = -1;}
-      */
+      
       //enemies.add(new sevenUp(200+var,1,5,1,200+var));
       //enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
       enemies.add(new sevenUp(width/2-150+var,1,10,vel,Math.abs(var), 1));
@@ -298,6 +422,7 @@ void level1(){
     }
     eCount++;
   }
+  
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
     float var = random(150);
@@ -305,8 +430,8 @@ void level1(){
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
   */
-  if (enemies.size() == 0 && eCount > 5){
-    bosses.add(new cola(width/2,100,50,width/2,20,width/2 - 100, width/2 + 100));
+  if (enemies.size() == 0){
+    bosses.add(new cola(width/2,100,50,width/2,40,width/2 - 100, width/2 + 100));
     eCount = 0;
   }
 }
@@ -457,6 +582,14 @@ boolean isTouching(float cx, float cy, float radius, float rx, float ry, float r
   return false;
 }
 
+boolean isTouchRect(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h) {
+
+  if (r1x + r1w >= r2x && r1x <= r2x + r2w && r1y + r1h >= r2y && r1y <= r2y + r2h) {    
+        return true;
+  }
+  return false;
+}
+
 interface damageable{
   void getHurt();
   float getHealth();
@@ -541,7 +674,20 @@ void pattern3(float x, float y) {
   }else{isGY = -1;}
   eBullets.add(new eBullet(x + random(10,110),y + random(20,130), isGX * random(15,70), isGY * random(20,90)));
  eBullets.add(new eBullet(x + random(10,110),y + random(20,130), isGX * random(15,70), isGY * random(20,90)));
+
 }
 
+void pattern4(float x, float y) {
+  eBullets.add(new eBullet(x + 160,y, 25,0));
+  eBullets.add(new eBullet(x - 160,y, -25,0));
+  eBullets.add(new eBullet(x + 50,y, 25,0));
+  eBullets.add(new eBullet(x - 50,y, -25,0));
+}
 
+void pattern5(float x, float y, int degree) {
+  eBullets.add(new eBullet(x + 5 * cos(degree), y + 5 * sin(degree), 7, degree));
+  eBullets.add(new eBullet(x + 5 * cos(degree+90), y + 5 * sin(degree+90), 7, degree+90));
+  eBullets.add(new eBullet(x + 5 * cos(degree+90+90), y + 5 * sin(degree+90+90), 7, degree+90+90));
+  eBullets.add(new eBullet(x + 5 * cos(degree+90+90+90), y + 5 * sin(degree+90+90+90), 7, degree+90+90+90));
+}
   

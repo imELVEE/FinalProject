@@ -34,6 +34,8 @@ abstract class boss extends thing implements damageable{
     this.health = health;
     this.startX = startX;
   }
+  abstract void rotate1();
+   abstract void moveD(float velox, float veloy);
   abstract void move();
   abstract float[] getHitbox();
   
@@ -43,6 +45,7 @@ abstract class boss extends thing implements damageable{
   void getHurt(){
     health -= 1;
   }
+  abstract void moveDown(int velocity);
 }
 
 class sevenUp extends enemy{
@@ -102,7 +105,10 @@ class cola extends boss{
     this.posBoundary = posBoundary;
   }
   float[] getHitbox() {return hitbox;}
-  
+  void moveD(float velox, float veloy) {
+    x += velox;
+    y += veloy;
+  }
   void show(){
     /*
   pushMatrix();
@@ -118,8 +124,18 @@ class cola extends boss{
   }
   void move(){
     x += velocity;
-    if (x >= posBoundary || x <= negBoundary){
+    if (x >= width - 50 || x <= 50){
       velocity = -velocity;
     }
+  }
+  
+  void rotate1() {
+    pushMatrix();
+    rotate(5);
+    popMatrix();
+  }
+  
+  void moveDown(int velocity) {
+    y += velocity;
   }
 }
