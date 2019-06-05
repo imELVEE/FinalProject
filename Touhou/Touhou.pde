@@ -151,10 +151,11 @@ void mode1(){
 void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
-  if (frameCount % 120 == 0 && frameCount > 0 && bosses.size() == 0){
+  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(100);
-    enemies.add(new sevenUp(200+var,1,5,1,200+var));
-    enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
+    //enemies.add(new sevenUp(200+var,1,5,1,200+var));
+    //enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
+    enemies.add(new sevenUp(width/2+var,1,5,1,width/2+var));
   }
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0){
