@@ -430,7 +430,7 @@ void level1(){
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
   */
-  if (enemies.size() == 0){
+  if (enemies.size() == 0 && eCount == 5){
     bosses.add(new cola(width/2,100,50,width/2,40,width/2 - 100, width/2 + 100));
     eCount = 0;
   }
