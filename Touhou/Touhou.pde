@@ -87,7 +87,7 @@ void mode1(){
   
   for (int i = 0 ;i < enemies.size() ;){
     enemy e = enemies.get(i);
-    if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0){
+    if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0 || e.getY() <= 0){
       enemies.remove(i);
     }
     else{
@@ -114,24 +114,26 @@ void mode1(){
     }
   }
   
-  if (level == 1){level1();}
+  if (level == 1 && bosses.size() == 0){level1();}
+  if (level == 2 && bosses.size() == 0){mode = 2;}
 }
 
 void level1(){
   //print(" " + enemies.size());
-  print(" " + bosses.size());
+  //print(" " + bosses.size());
   if (frameCount % 260 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(100);
     enemies.add(new sevenUp(200+var,0,5,1,200+var));
     enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
   }
-  if (frameCount % 360 == 0 && frameCount > 0 && bosses.size() == 0){
+  if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(150);
-    enemies.add(new sevenUp(300+var,0,5,1,300+var));;;
-    enemies.add(new sevenUp(width-300-var,0,5,-1,width-300-var));
+    enemies.add(new sevenUp(100+var,0,5,-1,100+var));
+    enemies.add(new sevenUp(width-100-var,0,5,1,width-100-var));
   }
   if (enemies.size() == 0 && frameCount > 360){
-    bosses.add(new cola(width/2,100,30,width/2,1,width/2 - 100, width/2 + 100));
+    bosses.add(new cola(width/2,100,50,width/2,20,width/2 - 100, width/2 + 100));
+    level = 2;
   }
 }
 
