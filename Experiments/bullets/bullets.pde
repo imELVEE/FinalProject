@@ -1,11 +1,9 @@
+int i = 0;
+int counter = 0;
 void bulletpattern(int r) {
   float x1 = 200;
   float y1 = 200;
-  for (int i = 0; i < 360; i+=10) {
-     if (frameCount % 10 == 0) {
-       ellipse(x1 + r * cos(i),y1 + r * sin(i),10,10);
-    }
-  }
+  ellipse(x1 + r * cos(i),y1 + r * sin(i),10,10);
 }
 
 void setup() {
@@ -15,6 +13,9 @@ void setup() {
 }
 
 void draw() {
-  clear();
-  bulletpattern(80);
+  if (frameCount % 2 == 0 && counter < 5) {
+     i += 5;
+     counter++;
+    bulletpattern(80);
+  }
 }

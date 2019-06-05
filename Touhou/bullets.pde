@@ -1,3 +1,6 @@
+float hw = width / 2;
+float hh = height / 2;
+float d = 5;
 abstract class bullet extends thing{
   float velocity;
   float radius;
@@ -27,5 +30,18 @@ class pBullet extends bullet{
       ellipse(x,y,10,10);
       super.move();
     
+  }
+}
+
+class eBullet extends bullet {
+  int degree;
+  eBullet(float ex, float why, float speed, int deg){
+    super(ex,why,speed);
+    radius= 10;
+    degree = deg;
+  }
+  
+  void moveD(int r) {
+    ellipse(x + velocity * cos(r), y + velocity * sin(r), 10,10);
   }
 }
