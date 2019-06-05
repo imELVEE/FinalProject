@@ -23,9 +23,9 @@ class pBullet extends bullet{
     radius = 10;
   }
   void move(){
+      super.move();
       fill(190,41,91);
       ellipse(x,y,10,10);
-      super.move();
     
   }
 }

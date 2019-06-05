@@ -28,6 +28,8 @@ void setup(){
 }
 
 void draw(){
+  //print(frameCount+ " ");
+  //print(bullets.size() + " ");
   
   if (mode == 0){
     startMenu();
@@ -46,6 +48,15 @@ void draw(){
   }
 }
 
+
+
+
+
+
+
+
+
+
 void mode1(){
   // x and y refer to player x and y
   background(255);
@@ -61,6 +72,7 @@ void mode1(){
   for (int i = 0 ; i < bullets.size() ; ){
     boolean hit = false;
     bullet b = bullets.get(i);
+    b.move();
     for (enemy m: enemies){
       if (!hit && isTouching(b.getX(), b.getY(), b.getRad(), m.getX(), m.getY(), m.getHitbox()[0], m.getHitbox()[1])){
         bullets.remove(i);
@@ -79,7 +91,6 @@ void mode1(){
       bullets.remove(i); 
     }
     else if (!hit){
-      b.move();
       i++;
     }
   
@@ -115,23 +126,25 @@ void mode1(){
   }
   
   if (level == 1 && bosses.size() == 0){level1();}
-  if (level == 2 && bosses.size() == 0){mode = 2;}
+  if (level == 2 && bosses.size() == 0){mode = 2; frameCount = 0;}
 }
 
 void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
-  if (frameCount % 260 == 0 && frameCount > 0 && bosses.size() == 0){
+  if (frameCount % 120 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(100);
-    enemies.add(new sevenUp(200+var,0,5,1,200+var));
-    enemies.add(new sevenUp(width-200-var,0,5,-1,width-200-var));
+    enemies.add(new sevenUp(200+var,1,5,1,200+var));
+    enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
   }
+  /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(150);
-    enemies.add(new sevenUp(100+var,0,5,-1,100+var));
-    enemies.add(new sevenUp(width-100-var,0,5,1,width-100-var));
+    enemies.add(new sevenUp(100+var,1,5,-1,100+var));
+    enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
-  if (enemies.size() == 0 && frameCount > 360){
+  */
+  if (enemies.size() == 0 && frameCount > 300){
     bosses.add(new cola(width/2,100,50,width/2,20,width/2 - 100, width/2 + 100));
     level = 2;
   }
@@ -227,11 +240,13 @@ void mouseClicked(){
      if (buttonX && mouseY <= 370+40 && mouseY >= 370){
        mode = 2;
        level = 1;
+       frameCount = 0;
      }
     }
     else if (mode == 2){
       if (buttonX && mouseY <= 100+40 && mouseY >= 100){
         mode = 1;
+        frameCount = 0;
       }
     }
 }

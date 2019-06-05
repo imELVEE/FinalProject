@@ -71,16 +71,29 @@ class cola extends boss{
   float velocity;
   float negBoundary;
   float posBoundary;
+  float deg = .1;
   
   cola(float x, float y, float health, float startX, float velocity, float negBoundary, float posBoundary){
     super(x,y,health,startX);
-    hitbox = new float[]{20,40};
+    hitbox = new float[]{60,80};
     this.velocity = velocity;
     this.negBoundary = negBoundary;
     this.posBoundary = posBoundary;
   }
   
-  void show(){image(me,x-20,y-40,60,80);}
+  void show(){
+    /*
+  pushMatrix();
+  translate(x,y);
+  rotate(radians(deg));
+  */
+  image(me,x-20,y-40,60,80);
+  //popMatrix();
+  if (deg < 360)
+    deg+=.1;
+   else
+     deg = .1;
+  }
   void move(){
     x += velocity;
     if (x >= posBoundary || x <= negBoundary){
