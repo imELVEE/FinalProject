@@ -1,6 +1,7 @@
 //enemies should include:
 //7UP,Sinkist,,
 abstract class enemy extends thing implements damageable{
+  int id;
   PImage me;
   float health;
   float startX;
@@ -12,6 +13,7 @@ abstract class enemy extends thing implements damageable{
   }
   abstract void move();
   abstract void moveD(float velox, float veloy);
+  int getID() {return id;}
   
   
   float getHealth(){return health;}
@@ -33,6 +35,7 @@ abstract class boss extends thing implements damageable{
     this.startX = startX;
   }
   abstract void move();
+  abstract float[] getHitbox();
   
   float getHealth(){return health;}
   float getStartX(){return startX;}
@@ -47,11 +50,14 @@ class sevenUp extends enemy{
   float velocity;
   
   
-  sevenUp(float x, float y, float health, float velocity, float startX){
+  sevenUp(float x, float y, float health, float velocity, float startX, int idx){
     super(x,y,health,startX);
     this.velocity = velocity;
     hitbox = new float[]{20,40};
+    id = idx;
   }  
+  
+  float[] getHitbox() {return hitbox;}
   
   void moveD(float velox, float veloy) {
     x += velox;
@@ -59,6 +65,8 @@ class sevenUp extends enemy{
   }
   
   void show(){image(me,x-10,y-20,20,40);}
+  
+  
   
   
   /*
@@ -93,6 +101,7 @@ class cola extends boss{
     this.negBoundary = negBoundary;
     this.posBoundary = posBoundary;
   }
+  float[] getHitbox() {return hitbox;}
   
   void show(){
     /*

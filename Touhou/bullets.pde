@@ -42,6 +42,7 @@ class eBullet extends bullet {
   PVector mouse;
   PVector location;
   PVector ve;
+  int lifespan = 0;
   eBullet(float ex, float why, float vx, float vy){
     super(ex,why,sqrt(pow(vx,2) + pow(vy,2)));
     radius= 10;
@@ -81,6 +82,13 @@ class eBullet extends bullet {
     location.add(ve);
     x= location.x;
     y= location.y;
+  }
+  
+  void slowDown() {
+    ellipse(x + velox, y + veloy, 10,10);
+    velox *= 0.95;
+    veloy *= 0.95;
+    lifespan++;
   }
   void moveD() {
     ellipse(x + velocity * cos(degree), y + velocity * sin(degree), 10,10);
