@@ -80,7 +80,7 @@ class cola extends boss{
     this.posBoundary = posBoundary;
   }
   
-  void show(){image(me,x-20,y-40,40,80);}
+  void show(){image(me,x-20,y-40,60,80);}
   void move(){
     x += velocity;
     if (x >= posBoundary || x <= negBoundary){
