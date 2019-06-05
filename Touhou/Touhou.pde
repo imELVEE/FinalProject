@@ -16,6 +16,7 @@ PImage clicked;
 PImage gover;
 boolean first = true;
 boolean second = false;
+int counter;
 
 //world size, playerbullets, player
 void setup(){
@@ -24,6 +25,7 @@ void setup(){
   enemies = new ArrayList<enemy>();
   bosses = new ArrayList<boss>();
   eBullets = new ArrayList<eBullet>();
+  counter = 0;
   p = new player();
   mode = 0;
   starting = loadImage("spriteThanos.png");
@@ -70,7 +72,7 @@ void draw(){
 
 
 void mode1(){
-  int counter = 0;
+  
   // x and y refer to player x and y
   background(255);
   //move player with mouse
@@ -346,18 +348,28 @@ void pattern1(float x, float  y, int mode){
   //x and y are enemy coordinates
      if (mode == 1) {
         
-        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 10, 0));
-        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 10, 72));
-        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 10, 144));
-        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 10, 216));
-        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 10, 288));
+        eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 3, 0));
+        eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 3, 72));
+        eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 3, 144));
+        eBullets.add(new eBullet(x + 5 * cos(216), y + 5 * sin(216), 3, 216));
+        eBullets.add(new eBullet(x + 5 * cos(288), y + 5 * sin(288), 3, 288));
+        eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 3, 36));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 3, 108));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 3, 180));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 3, 252));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 3, 324));
         
      } else if (mode == 2) {
-       eBullets.add(new eBullet(x + 5 * cos(0 + 36), y + 5 * sin(0 + 36), 10, 36));
-        eBullets.add(new eBullet(x + 5 * cos(72 + 36), y + 5 * sin(72 + 36), 10, 108));
-        eBullets.add(new eBullet(x + 5 * cos(144 + 36), y + 5 * sin(144 + 36), 10, 180));
-        eBullets.add(new eBullet(x + 5 * cos(216 + 36), y + 5 * sin(216 + 36), 10, 252));
-        eBullets.add(new eBullet(x + 5 * cos(288 + 36), y + 5 * sin(288 + 36), 10, 324));
+       eBullets.add(new eBullet(x + 5 * cos(0 + 18), y + 5 * sin(0 + 18), 8, 18));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 18), y + 5 * sin(72 + 18), 8, 90));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 18), y + 5 * sin(144 + 18), 8, 162));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 18), y + 5 * sin(216 + 18), 8, 234));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 18), y + 5 * sin(288 + 18), 8, 306));
+       eBullets.add(new eBullet(x + 5 * cos(0 + 36 + 18), y + 5 * sin(0 + 36 + 18), 8, 54));
+        eBullets.add(new eBullet(x + 5 * cos(72 + 36 + 18), y + 5 * sin(72 + 36 + 18), 8, 126));
+        eBullets.add(new eBullet(x + 5 * cos(144 + 36 + 18), y + 5 * sin(144 + 36 + 18), 8, 198));
+        eBullets.add(new eBullet(x + 5 * cos(216 + 36 + 18), y + 5 * sin(216 + 36 + 18), 8, 270));
+        eBullets.add(new eBullet(x + 5 * cos(288 + 36 + 18), y + 5 * sin(288 + 36 + 18), 8, 342));
      }
   }
 
