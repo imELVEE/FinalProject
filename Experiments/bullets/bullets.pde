@@ -13,9 +13,11 @@ void setup() {
 }
 
 void draw() {
-  if (frameCount % 2 == 0 && counter < 5) {
+  if (frameCount % 2 == 0 && counter < 25) {
      i += 5;
      counter++;
     bulletpattern(80);
+  }
+  if (counter == 5) {
   }
 }
