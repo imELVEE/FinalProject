@@ -28,7 +28,7 @@ class pBullet extends bullet{
   void move(){
       super.move();
       fill(190,41,91);
-      ellipse(x,y,10,10);
+      ellipse(x,y,radius,radius);
     
   }
 }
@@ -41,6 +41,10 @@ class eBullet extends bullet {
     super(ex,why,speed);
     radius= 10;
     degree = deg;
+  }
+  
+  String toString() {
+    return "" + radius + " " + degree;
   }
   
   void moveD(int r) {

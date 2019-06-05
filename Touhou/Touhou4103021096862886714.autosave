@@ -22,7 +22,6 @@ void setup(){
   bullets =  new ArrayList<bullet>();
   enemies = new ArrayList<enemy>();
   bosses = new ArrayList<boss>();
-  eBullets = new ArrayList<eBullet>();
   p = new player();
   mode = 0;
   starting = loadImage("spriteThanos.png");
@@ -111,10 +110,9 @@ void mode1(){
         //print("[" + Math.min(e.getX(),width-e.getX()) + ", " + Math.min(e.getX(),width-e.getX())/2 + "]");
         e.move();
       } else {
-        if (frameCount % 20 == 0) {
+        if (frameCount % 10 == 0) {
           if (counter % 2 ==0) {
             pattern1(e.getX(), e.getY(), 1);
-            
           }else {
             pattern1(e.getX(), e.getY(), 2);
           }
@@ -153,19 +151,18 @@ void mode1(){
 void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
-  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2){
+  if (frameCount % 120 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(100);
     enemies.add(new sevenUp(200+var,1,5,1,200+var));
     enemies.add(new sevenUp(width-200-var,1,5,-1,width-200-var));
-    //enemies.add(new sevenUp(width/2+var,1,5,1,width/2+var));
   }
-  
-  if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
+  /*
+  if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0){
     float var = random(150);
     enemies.add(new sevenUp(100+var,1,5,-1,100+var));
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
-  
+  */
   if (enemies.size() == 0 && frameCount > 300){
     bosses.add(new cola(width/2,100,50,width/2,20,width/2 - 100, width/2 + 100));
     level = 2;
@@ -300,7 +297,6 @@ interface damageable{
 void pattern1(float x, float  y, int mode){
   //x and y are enemy coordinates
      if (mode == 1) {
-        
         eBullets.add(new eBullet(x + 5 * cos(0), y + 5 * sin(0), 5, 0));
         eBullets.add(new eBullet(x + 5 * cos(72), y + 5 * sin(72), 5, 72));
         eBullets.add(new eBullet(x + 5 * cos(144), y + 5 * sin(144), 5, 144));
