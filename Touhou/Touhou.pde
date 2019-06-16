@@ -101,7 +101,6 @@ void mode1(){
   if (p.getHealth() == 0) {
     gameOver();
   }
-  println(moveC);
   //shoot a bullet every time bullet is called and remove it at edge of world
   if (frameCount % 5 == 0) {
     bullets.add(new pBullet(x,y-30,15));
@@ -415,7 +414,7 @@ void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
   
-  /*if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1){
+  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1 && eCount < 3){
     float var = random(100,200);
     int vel = -1;
     if (random(-1,1) < 0) {
@@ -430,7 +429,7 @@ void level1(){
       enemies.add(new sevenUp(width/2-150+var,30,10,vel,Math.abs(var), 2));
     }
     eCount++;
-  }*/
+  }
   
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
@@ -439,7 +438,7 @@ void level1(){
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
   */
-  if (enemies.size() == 0 ){
+  if (enemies.size() == 0 && eCount == 3){
     bosses.add(new cola(width/2,100,100,width/2,40,width/2 - 100, width/2 + 100));
     eCount = 0;
   }
