@@ -25,6 +25,7 @@ int eCount;
 int vd;
 boolean moved;
 int degreeC;
+boolean phaseC;
 
 //world size, playerbullets, player
 void setup(){
@@ -50,6 +51,7 @@ void setup(){
   vd = 5;
   moved = false;
   degreeC = 0;
+  phaseC = true;
 }
 
 void draw(){
@@ -99,6 +101,7 @@ void mode1(){
   if (p.getHealth() == 0) {
     gameOver();
   }
+  println(moveC);
   //shoot a bullet every time bullet is called and remove it at edge of world
   if (frameCount % 5 == 0) {
     bullets.add(new pBullet(x,y-30,15));
@@ -140,6 +143,7 @@ void mode1(){
       if(e.getX() <= 0 || e.getX() >= width || e.getHealth() <= 0 || e.getY() <= 0){
         dead = true;
         moving = false;
+       
         enemies.remove(i);
         frameCount = 0;
       }
@@ -246,10 +250,12 @@ void mode1(){
       boss b = bosses.get(i);
       if(b.getX() <= 0 || b.getX() >= width || b.getHealth() <= 0){
         bosses.remove(i);
+        moving = false;
         dead = true;
+         phaseC = true;
       }
       else{
-        if (b.getHealth() > 20) {
+        if (b.getHealth() > 70) {
           if (frameCount % 160 == 0 && !moving) {
             vd = 5;
             moving = true;
@@ -290,8 +296,11 @@ void mode1(){
                 z++;
               }
             }
-        } else if (b.getHealth() > 10 && b.getHealth() <= 20) {
-          
+        } else if (b.getHealth() > 30 && b.getHealth() <= 70) {
+          if (phaseC) {
+            phaseC = false;
+            moving = false;
+          }
           if (frameCount % 5 == 0) {
             pattern5(b.getX(), b.getY(), degreeC);
             degreeC+=1;
@@ -313,7 +322,7 @@ void mode1(){
             moving = true;
             moveC = new coords(b.getX(), b.getY());
           }
-          if (moving) {
+          else if (moving) {
             if (frameCount % 3 == 0) {
               b.moveD(moveC.getVelox(), moveC.getVeloy());
               moveC.halveY();
@@ -406,7 +415,7 @@ void level1(){
   //print(" " + enemies.size());
   //print(" " + bosses.size());
   
-  if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1){
+  /*if (frameCount % 80 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 1){
     float var = random(100,200);
     int vel = -1;
     if (random(-1,1) < 0) {
@@ -421,7 +430,7 @@ void level1(){
       enemies.add(new sevenUp(width/2-150+var,30,10,vel,Math.abs(var), 2));
     }
     eCount++;
-  }
+  }*/
   
   /*
   if (frameCount % 160 == 0 && frameCount > 0 && bosses.size() == 0 && enemies.size() < 2 ){
@@ -430,8 +439,8 @@ void level1(){
     enemies.add(new sevenUp(width-100-var,1,5,1,width-100-var));
   }
   */
-  if (enemies.size() == 0 && eCount == 5){
-    bosses.add(new cola(width/2,100,50,width/2,40,width/2 - 100, width/2 + 100));
+  if (enemies.size() == 0 ){
+    bosses.add(new cola(width/2,100,100,width/2,40,width/2 - 100, width/2 + 100));
     eCount = 0;
   }
 }
@@ -485,7 +494,7 @@ void mode2(){
 }
 
 void gameOver(){
-  background(183,33,33);
+  background(33,33,33);
   image(gover,150,0,275,300);
   textSize(15);
   text("You died. How sad. Click to restart.",175,400);
